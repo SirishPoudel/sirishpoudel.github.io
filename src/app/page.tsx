@@ -28,7 +28,6 @@ export default function Home() {
               sizes="(max-width: 900px) 100vw, 58vw"
             />
           </div>
-          <div className="hero-shade" aria-hidden />
 
           <div className="hero-content">
             <p className="chip">Identity. Access. Infrastructure.</p>
@@ -240,7 +239,6 @@ export default function Home() {
         {/* ---------- Contact ---------- */}
         <section id="contact" className="section container" aria-labelledby="contact-title">
           <div className="contact">
-            <div className="contact-glow" aria-hidden />
             <p className="chip">Contact</p>
             <h2 id="contact-title" className="contact-title">
               Have a platform to build? Let&apos;s talk.

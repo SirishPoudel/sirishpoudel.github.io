@@ -18,6 +18,8 @@ export const site = {
     linkedin: "https://www.linkedin.com/in/sirish-poudel",
     github: "https://github.com/SirishPoudel",
   },
+  // Put your CV at public/Sirish-Poudel-CV.pdf (the header "Download CV" button links here).
+  cv: "/Sirish-Poudel-CV.pdf",
   photo: {
     src: "/images/profile.jpg",
     alt: "Portrait of Sirish Poudel, Full Stack Software Engineer",

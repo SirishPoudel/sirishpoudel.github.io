@@ -67,6 +67,22 @@ export default function Header() {
     setOpen(false);
   };
 
+  // Smooth-scroll in-page links without putting "#section" in the address bar.
+  useEffect(() => {
+    if (window.location.hash) history.replaceState(null, "", window.location.pathname + window.location.search);
+    const onClick = (e: MouseEvent) => {
+      if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      const link = (e.target as Element).closest?.<HTMLAnchorElement>('a[href^="#"]');
+      const target = link && document.querySelector<HTMLElement>(link.getAttribute("href")!);
+      if (!target) return;
+      e.preventDefault();
+      target.scrollIntoView({ behavior: "smooth", block: "start" });
+      if (target.tabIndex >= 0 || target.hasAttribute("tabindex")) target.focus({ preventScroll: true });
+    };
+    document.addEventListener("click", onClick);
+    return () => document.removeEventListener("click", onClick);
+  }, []);
+
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
     window.addEventListener("keydown", onKey);
@@ -80,7 +96,7 @@ export default function Header() {
           <span className="logo-mark" aria-hidden>
             S
           </span>
-          {site.name}
+          <span className="logo-name">{site.name}</span>
         </a>
 
         <nav className="nav-pill" aria-label="Primary">
@@ -109,9 +125,17 @@ export default function Header() {
           </ul>
         </nav>
 
-        <a href="#contact" onClick={() => go("#contact")} className="btn btn-primary header-cta">
-          Get in touch <ArrowUpRight />
-        </a>
+        <div className="header-actions">
+          <a href={site.cv} download className="btn btn-ghost" aria-label="Download CV (PDF)">
+            <DownloadIcon />
+            <span>
+              <span className="cv-label">Download </span>CV
+            </span>
+          </a>
+          <a href="#contact" onClick={() => go("#contact")} className="btn btn-primary">
+            Get in touch <ArrowUpRight />
+          </a>
+        </div>
 
         <button
           type="button"
@@ -138,9 +162,14 @@ export default function Header() {
             </li>
           ))}
         </ul>
-        <a href="#contact" className="btn btn-primary" onClick={() => go("#contact")}>
-          Get in touch <ArrowUpRight />
-        </a>
+        <div className="mobile-actions">
+          <a href={site.cv} download className="btn btn-ghost" onClick={() => setOpen(false)}>
+            <DownloadIcon /> Download CV
+          </a>
+          <a href="#contact" className="btn btn-primary" onClick={() => go("#contact")}>
+            Get in touch <ArrowUpRight />
+          </a>
+        </div>
       </nav>
     </header>
   );
@@ -150,6 +179,14 @@ export function ArrowUpRight() {
   return (
     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
       <path d="M7 17 17 7M8 7h9v9" />
+    </svg>
+  );
+}
+
+function DownloadIcon() {
+  return (
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+      <path d="M12 4v11M7 10l5 5 5-5M5 20h14" />
     </svg>
   );
 }
